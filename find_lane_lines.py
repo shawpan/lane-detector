@@ -6,6 +6,7 @@ import os
 import ntpath
 import matplotlib.pyplot as plt
 from image_processing import *
+from perspective_transformer import PerspectiveTransformer
 from moviepy.editor import VideoFileClip
 import argparse
 
@@ -17,8 +18,13 @@ def process_image(img):
     Args:
         img: camera image
     """
+    src = np.float32([[240,719],[579,450],[712,450],[1165,719]])
+    dst =  np.float32([[300,719],[300,0],[900,0],[900,719]])
+    transformer = PerspectiveTransformer(src, dst)
+
     undistort_image = undistort(img, objpoints, imgpoints)
     processed_image = process_binary(undistort_image)
+    processed_image = transformer.transform(processed_image)
 
     return processed_image
 

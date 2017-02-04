@@ -28,6 +28,7 @@ def process_image(img):
     left_fit, right_fit, yvals, out_img = find_lanes(processed_image)
     processed_image = fit_lane(processed_image, undistort_image, yvals, left_fit, right_fit, transformer)
     left_curvature, right_curvature, distance = get_curvature(left_fit, right_fit, yvals)
+    processed_image = draw_stat(processed_image, left_curvature, right_curvature, distance)
 
     return processed_image
 

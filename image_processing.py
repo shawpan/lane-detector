@@ -197,3 +197,19 @@ def get_curvature(leftx, rightx, ploty):
     distance = (center_x - center) * xm_per_pix
 
     return (left_curverad, right_curverad, np.mean(distance * 100.0))
+
+def draw_stat(img, left_curvature, right_curvature, distance):
+    """ Draw curvature and distance measurements
+    Args:
+        img: resulted image after drawing lanes
+        left_curvature: radius of curve of left line
+        right_curvature: radius of curve of right line
+    Returns:
+        image with measurements written
+    """
+    direction = 'left' if distance < 0 else 'right'
+    cv2.putText(img, 'Radius of Left Curvature = %d(m)' % left_curvature, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(img, 'Radius of Right Curvature = %d(m)' % right_curvature, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(img, 'Vehicle distance from center = %d(cm) %s' % (np.absolute(distance), direction), (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+
+    return img;

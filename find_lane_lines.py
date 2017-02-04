@@ -25,6 +25,7 @@ def process_image(img):
     undistort_image = undistort(img, objpoints, imgpoints)
     processed_image = process_binary(undistort_image)
     processed_image = transformer.transform(processed_image)
+    left_fit, right_fit, yvals, out_img = find_lanes(processed_image)
 
     return processed_image
 

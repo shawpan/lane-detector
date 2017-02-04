@@ -335,8 +335,8 @@ processed_image = fit_lane(bird_eye_view_image, undistort_image, yvals, left_fit
 
 ####1. Video Result
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=nHipGC-6gzk
-" target="_blank"><img src="http://img.youtube.com/vi/nHipGC-6gzk/0.jpg" 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=wdwiO0D2SYk
+" target="_blank"><img src="http://img.youtube.com/vi/wdwiO0D2SYk/0.jpg" 
 alt="Track 1" width="608" border="10" /></a>
 
 Here's a [link to my video result](./output_video/project_video.mp4)

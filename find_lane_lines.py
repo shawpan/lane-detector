@@ -18,8 +18,9 @@ def process_image(img):
         img: camera image
     """
     undistort_image = undistort(img, objpoints, imgpoints)
+    processed_image = process_binary(undistort_image)
 
-    return undistort_image
+    return processed_image
 
 def find_lane_lines(type):
     """ Find lanes from images or video

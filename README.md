@@ -34,7 +34,7 @@ I have then used the output `objpoints` and `imgpoints` to compute the camera ca
 ![Undistorted chessboard Image][calimagechessboard]
 
 ##Pipeline (test images)
-Each image goes through the following steps implemented in `process_image()` method of `find_lane_lines.py`
+Each image goes through the following steps implemented in `process_image()` method of `lane_detector.py`
 
 1. Undistort using `objpoints` and `imgpoints` determined from camera calibration
 2. Create binary image using several thresholding methods to make lane lines prominent 

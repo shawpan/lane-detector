@@ -169,7 +169,7 @@ def fit_lane(warped_img, undist, yvals, left_fitx, right_fitx, transformer):
 
     return result
 
-def get_curvature(leftx, rightx, ploty):
+def get_measurements(leftx, rightx, ploty):
     """ Calculate lane curvature and vehicle distance from center
     Args:
         leftx: left x points

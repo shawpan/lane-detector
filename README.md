@@ -3,7 +3,7 @@
 ## Demo
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=wdwiO0D2SYk
-" target="_blank"><img src="http://img.youtube.com/vi/wdwiO0D2SYk/0.jpg" 
+" target="_blank"><img src="http://img.youtube.com/vi/wdwiO0D2SYk/0.jpg"
 alt="Track 1" width="608" border="10" /></a>
 
 ---
@@ -37,13 +37,13 @@ I have then used the output `objpoints` and `imgpoints` to compute the camera ca
 Each image goes through the following steps implemented in `process_image()` method of `lane_detector.py`
 
 1. Undistort using `objpoints` and `imgpoints` determined from camera calibration
-2. Create binary image using several thresholding methods to make lane lines prominent 
+2. Create binary image using several thresholding methods to make lane lines prominent
 3. Transform the binary image to bird eye view to make the lane lines significant
 4. Find lane line points from the transformed image
 5. Draw the lanes on undistorted image
 
-###1. Undistort: 
-This step is implemented in `undistort()` method of `image_procesing.py` 
+###1. Undistort:
+This step is implemented in `undistort()` method of `image_procesing.py`
 
 ```python
 def undistort(img, objpoints, imgpoints):
@@ -61,7 +61,7 @@ def undistort(img, objpoints, imgpoints):
     dst = cv2.undistort(img, mtx, dist, None, mtx)
 
     return dst
-    
+
 undistort_image = undistort(img, objpoints, imgpoints)
 ```
 
@@ -71,8 +71,8 @@ undistort_image = undistort(img, objpoints, imgpoints)
 ####Undistorted Road Image
 ![Undistorted Image][undistorted]
 
-###2. Processing undistorted image to binary: 
-To create a binary image from undistorted image I have implemented `process_binary()` method of `image_processing.py`. Here, two separate processes are combined to create the thresholded binary. 
+###2. Processing undistorted image to binary:
+To create a binary image from undistorted image I have implemented `process_binary()` method of `image_processing.py`. Here, two separate processes are combined to create the thresholded binary.
 
 1. image is converted to gray scale => applied sobel operator on x axis => get the absolute sobel values => scale the values between 0 and 255 => apply binary thesholding between 30 and 150 pixel values
 2. convert the image to HLS color space => extract S channel => get pixels having S values between 175 and 250
@@ -108,7 +108,7 @@ def process_binary(img):
     combined_binary[(s_binary == 1) | (sxbinary == 1)] = 1
 
     return combined_binary
-    
+
 processed_image = process_binary(undistort_image)
 ```
 
@@ -118,7 +118,7 @@ processed_image = process_binary(undistort_image)
 ####Binary Image
 ![Binary Image][binary]
 
-###3. Perspective transformation: 
+###3. Perspective transformation:
 To create a bird eye view of the binary image, I have implemented `transform()` method of `PerspectiveTransformer` class in `perspective_transformer.py`. I chose hardcoded source and destination points in the following manner:
 
 Source and destination points:
@@ -158,10 +158,10 @@ I implemented lanes finder from bird eye view image in `find_lanes()` method of 
 1. Generated histogram of lower half of the image.
 2. Divided the histogram in two equal parts, left and right on X axis. We can assume that left line is in left part and right line is in right part.
 3. Determined the highest peak in left and right part. These two initial points gave the idea of the position of left and right lines to search for.
-4. Chose the number of sliding windows to be 9 and determined the window size with `np.int(img.shape[0]/nwindows)` to slide along the initial points on Y axis and width 100 px. 
+4. Chose the number of sliding windows to be 9 and determined the window size with `np.int(img.shape[0]/nwindows)` to slide along the initial points on Y axis and width 100 px.
 5. Chose minimum pixels to search for in each window to be 50.
 6. Extracted non zero/lane pixels from the current window and appended it to left and right lanes.
-7. If the current window has lane pixels more than the minimum threshold recentered the search points 
+7. If the current window has lane pixels more than the minimum threshold recentered the search points
 7. Repeated the above steps
 
 ```python
@@ -248,7 +248,7 @@ def find_lanes(img):
     out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
 
     return (fit_leftx, fit_rightx, fity, out_img)
-    
+
 left_fit, right_fit, yvals, out_img = find_lanes(bird_eye_view_image)
 ```
 
@@ -259,9 +259,9 @@ left_fit, right_fit, yvals, out_img = find_lanes(bird_eye_view_image)
 ![Lanes][lanes]
 
 ###5. Find Curvature and Distance Measurements
-I implemented this in `get_curvature()` method of `image_processing.py`. 
+I implemented this in `get_measurements()` method of `image_processing.py`.
 ```python
-def get_curvature(leftx, rightx, ploty):
+def get_measurements(leftx, rightx, ploty):
     """ Calculate lane curvature
     Args:
         leftx: left x points
@@ -305,7 +305,7 @@ def fit_lane(warped_img, undist, yvals, left_fitx, right_fitx, transformer):
         right_fitx: x points of right lane
         transformer: perspective transformer
     Returns:
-        undistored image with lanes drawn 
+        undistored image with lanes drawn
     """
     # Create an image to draw the lines on
     warp_zero = np.zeros_like(warped_img).astype(np.uint8)
@@ -324,7 +324,7 @@ def fit_lane(warped_img, undist, yvals, left_fitx, right_fitx, transformer):
     # Combine the result with the original image
     result = cv2.addWeighted(undist, 1, newwarp, 0.3, 0)
     return result
-    
+
 processed_image = fit_lane(bird_eye_view_image, undistort_image, yvals, left_fit, right_fit, transformer)
 ```
 ![Final result][final]
@@ -336,7 +336,7 @@ processed_image = fit_lane(bird_eye_view_image, undistort_image, yvals, left_fit
 ####1. Video Result
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=wdwiO0D2SYk
-" target="_blank"><img src="http://img.youtube.com/vi/wdwiO0D2SYk/0.jpg" 
+" target="_blank"><img src="http://img.youtube.com/vi/wdwiO0D2SYk/0.jpg"
 alt="Track 1" width="608" border="10" /></a>
 
 Here's a [link to my video result](./output_video/project_video.mp4)

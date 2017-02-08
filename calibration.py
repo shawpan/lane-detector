@@ -9,6 +9,10 @@ class Calibration:
 
     Attributes:
         dir: directory path of calibration images
+        nx: number of points in x direction
+        ny: number of points in y direction
+        objpoints: mapped chessboard points
+        imgpoints: image chessboard points
     """
 
     def __init__(self, dir, nx, ny):

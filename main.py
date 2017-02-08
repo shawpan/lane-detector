@@ -6,6 +6,7 @@ import os
 import ntpath
 import argparse
 import matplotlib.pyplot as plt
+from image_processing import *
 from calibration import Calibration
 from perspective_transformer import PerspectiveTransformer
 from lane_detector import LaneDetector
@@ -60,9 +61,10 @@ def doc():
     left_fit, right_fit, yvals, out_img = find_lanes(processed_image)
     cv2.imwrite('doc/lanes.jpg', out_img)
     processed_image = fit_lane(processed_image, undistort_image, yvals, left_fit, right_fit, transformer)
-    left_curvature, right_curvature, distance = get_curvature(left_fit, right_fit, yvals)
+    left_curvature, right_curvature, distance = get_measurements(left_fit, right_fit, yvals)
     processed_image = draw_stat(processed_image, left_curvature, right_curvature, distance)
     cv2.imwrite('doc/final.jpg', out_img)
+    print("Generated documentaion images.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

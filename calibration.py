@@ -22,6 +22,17 @@ class Calibration:
         self.dir = dir
         self.nx = nx
         self.ny = ny
+        self.objpoints, self.imgpoints = None, None
+
+    def get_calibration_points(self):
+        """ Get calibration points
+        Returns:
+            (objpoints, imgpoints) tuple
+        """
+        if self.objpoints is None or self.imgpoints is None:
+            self.objpoints, self.imgpoints = self.calibrate()
+
+        return (self.objpoints, self.imgpoints)
 
     def calibrate(self):
         """ Calibrate images
@@ -73,4 +84,7 @@ class Calibration:
         with open('calibration.p', "wb") as data_file:
             pickle.dump(data, data_file)
         print("Calibration done and returned")
-        return (objpoints, imgpoints)
+
+        self.objpoints, self.imgpoints = objpoints, imgpoints
+
+        return (self.objpoints, self.imgpoints)
